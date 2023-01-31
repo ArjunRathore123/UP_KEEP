@@ -1,11 +1,11 @@
+from django.shortcuts import redirect
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from my_app.serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer, \
     SendResetPasswordEmailSerializer, UserResetPasswordSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
 from my_app.renderers import UserRenderer
 
 
@@ -48,9 +48,9 @@ class UserLoginView(APIView):
                                 status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
-    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get(request, format=None):
@@ -79,3 +79,17 @@ class ResetPasswordView(APIView):
         if serializer.is_valid(raise_exception=True):
             return Response({'msg': 'Reset Password Successfully'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutView(APIView):
+
+    @staticmethod
+    def post(request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"msg": "Logout"}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"msg": "Logout failed "}, status=status.HTTP_400_BAD_REQUEST)
+

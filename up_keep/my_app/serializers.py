@@ -4,7 +4,6 @@ from my_app.utils import Util
 from django.utils.encoding import smart_str, force_bytes, force_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-import re
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -133,3 +132,5 @@ class UserResetPasswordSerializer(serializers.Serializer):
         except DjangoUnicodeDecodeError as identifiers:
             PasswordResetTokenGenerator().check_token(user, token)
             raise serializers.ValidationError("Token is invalid or expired")
+
+

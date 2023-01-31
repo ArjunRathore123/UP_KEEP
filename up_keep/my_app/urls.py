@@ -1,7 +1,8 @@
 from my_app.views import UserRegistrationView, UserProfileView, SendResetPasswordEmailView,\
-    ResetPasswordView, UserLoginView
+    ResetPasswordView, UserLoginView, LogoutView
 from django.urls import path, include
 from repair_contact.router import router
+
 
 urlpatterns = [
     path('register', UserRegistrationView.as_view()),
@@ -10,4 +11,5 @@ urlpatterns = [
     path('SendResetPassword/', SendResetPasswordEmailView.as_view()),
     path('reset-password/<uid>/<token>', ResetPasswordView.as_view()),
     path('AddRepair/', include(router.urls)),
+    path('logout/', LogoutView.as_view()),
 ]
