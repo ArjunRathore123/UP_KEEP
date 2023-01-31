@@ -7,7 +7,7 @@ class RepairContact(models.Model):
     email = models.EmailField(verbose_name='email', max_length=255)
     contact_no = models.CharField(max_length=10)
     MY_CHOICES = (
-        ('select option', 'select option'),
+        ('None', 'select option'),
         ('plumber', 'plumber'),
         ('electrician', 'electrician'),
         ('door repair', 'door repair')
